@@ -35,5 +35,5 @@ Mix - Controls the wet dry level.
 
 Changing the diffusion timings can cause some clicking noises, interpolation needed to fix this.
 
-UI needs some changes to become more informative.
+UI needs some changes.
 
