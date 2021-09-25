@@ -1,5 +1,7 @@
 # Eko
 Multi-tap Diffusion Network reverb 
+
+![](Source/Assets/Eko.PNG)
 #
 Modelled on the Rounds Reverb by native istruments with some additional features not found on the orginal. 
 
