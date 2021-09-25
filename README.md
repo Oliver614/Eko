@@ -1,12 +1,14 @@
 # Eko
-Multi-tap FDN reverb 
+Multi-tap Diffusion Network reverb 
 #
 Modelled on the Rounds Reverb by native istruments with some additional features not found on the orginal. 
 
 Eko uses a multi-tap diffusion network topology with LFO driven diffusion timings to try and help maximise the diffusions through the 8 diffusion stages.
 
 Low Diffusion and Size, with high Feedback gives more metalic sounding noises while high Diffusion Feedback and Size give massive lush reverbs. 
+# Installation
 
+Just drag and drop the built VST files from the release folder into where you VST's are stored for your DAW, the restart you daw or resccan the folder to recognise the changes. 
 
 # Controls
 Pre-Delay - Predelay controls the amount of thime it takes for the imput signal to reach the reverb, giving a greater sense of space. Current max and min times 0 - 2 s.
