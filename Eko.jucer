@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="VAeWs2" name="Eko" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+  <MAINGROUP id="l4AFcE" name="Eko">
+    <GROUP id="{8561333E-E829-2116-812D-28326A2B11B5}" name="Assets">
+      <FILE id="HFZOX7" name="EkoBackground.png" compile="0" resource="1"
+            file="Source/Assets/EkoBackground.png"/>
+      <FILE id="vEP5Lk" name="EkoKnob.png" compile="0" resource="1" file="Source/Assets/EkoKnob.png"/>
+    </GROUP>
+    <GROUP id="{5BDF2BDD-19B1-33E1-FE1C-63D1BB6F15B0}" name="UI">
+      <FILE id="bGc7F1" name="EkoKnob.cpp" compile="1" resource="0" file="Source/UI/EkoKnob.cpp"/>
+      <FILE id="cjHMhw" name="EkoKnob.h" compile="0" resource="0" file="Source/UI/EkoKnob.h"/>
+      <FILE id="NZHNYm" name="EkoLookAndFeel.cpp" compile="1" resource="0"
+            file="Source/UI/EkoLookAndFeel.cpp"/>
+      <FILE id="LLbAW8" name="EkoLookAndFeel.h" compile="0" resource="0"
+            file="Source/UI/EkoLookAndFeel.h"/>
+    </GROUP>
+    <GROUP id="{0F13C20A-CCE2-D8AE-C49E-01695874E6CA}" name="Eko">
+      <GROUP id="{A21DC291-05BB-B3EE-26C2-DCC3F492B4A7}" name="EkoPreDelay">
+        <FILE id="JHZqqt" name="EkoPreDelay.cpp" compile="1" resource="0" file="Source/EkoPreDelay/EkoPreDelay.cpp"/>
+        <FILE id="foxYe7" name="EkoPreDelay.h" compile="0" resource="0" file="Source/EkoPreDelay/EkoPreDelay.h"/>
+      </GROUP>
+      <FILE id="dadsMZ" name="Eko.cpp" compile="1" resource="0" file="Source/Eko/Eko.cpp"/>
+      <FILE id="n7IP43" name="Eko.h" compile="0" resource="0" file="Source/Eko/Eko.h"/>
+      <GROUP id="{DEF09447-6F89-B8A3-2E39-CED17E6B5DA7}" name="EkoTime">
+        <FILE id="qawoTu" name="EkoTime.h" compile="0" resource="0" file="Source/TimeShaping/EkoTime.h"/>
+      </GROUP>
+      <GROUP id="{090895DC-0F3F-56A5-6AF4-28CF05F0DF34}" name="Filter">
+        <FILE id="QHO5EG" name="Filter.cpp" compile="1" resource="0" file="Source/Filter/Filter.cpp"/>
+        <FILE id="FgTK75" name="Filter.h" compile="0" resource="0" file="Source/Filter/Filter.h"/>
+      </GROUP>
+      <GROUP id="{3C29601E-F569-02FA-AC46-E090E6D39E8D}" name="DelayLine">
+        <FILE id="HOGD2E" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine/DelayLine.h"/>
+      </GROUP>
+    </GROUP>
+    <GROUP id="{42924D45-681F-64DE-9770-E8E44FAF0CEE}" name="Source">
+      <FILE id="sc9iGe" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="LyJIW8" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="yY8UPU" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="qtEJmp" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2019 targetFolder="Builds/VisualStudio2019">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Eko"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Eko"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_osc" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2019>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_osc" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+</JUCERPROJECT>

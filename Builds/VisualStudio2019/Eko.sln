@@ -1,0 +1,38 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2019
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eko - Standalone Plugin", "Eko_StandalonePlugin.vcxproj", "{54BC7EF0-6D55-920F-05CF-B2693A2804BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6C4D5CC9-224B-3F29-9F1D-86EBAA975F22} = {6C4D5CC9-224B-3F29-9F1D-86EBAA975F22}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eko - VST3", "Eko_VST3.vcxproj", "{2F8B213D-30FC-1453-E225-91B475913A0E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6C4D5CC9-224B-3F29-9F1D-86EBAA975F22} = {6C4D5CC9-224B-3F29-9F1D-86EBAA975F22}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eko - Shared Code", "Eko_SharedCode.vcxproj", "{6C4D5CC9-224B-3F29-9F1D-86EBAA975F22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F8B213D-30FC-1453-E225-91B475913A0E}.Debug|x64.ActiveCfg = Debug|x64
+		{2F8B213D-30FC-1453-E225-91B475913A0E}.Debug|x64.Build.0 = Debug|x64
+		{2F8B213D-30FC-1453-E225-91B475913A0E}.Release|x64.ActiveCfg = Release|x64
+		{2F8B213D-30FC-1453-E225-91B475913A0E}.Release|x64.Build.0 = Release|x64
+		{54BC7EF0-6D55-920F-05CF-B2693A2804BD}.Debug|x64.ActiveCfg = Debug|x64
+		{54BC7EF0-6D55-920F-05CF-B2693A2804BD}.Debug|x64.Build.0 = Debug|x64
+		{54BC7EF0-6D55-920F-05CF-B2693A2804BD}.Release|x64.ActiveCfg = Release|x64
+		{54BC7EF0-6D55-920F-05CF-B2693A2804BD}.Release|x64.Build.0 = Release|x64
+		{6C4D5CC9-224B-3F29-9F1D-86EBAA975F22}.Debug|x64.ActiveCfg = Debug|x64
+		{6C4D5CC9-224B-3F29-9F1D-86EBAA975F22}.Debug|x64.Build.0 = Debug|x64
+		{6C4D5CC9-224B-3F29-9F1D-86EBAA975F22}.Release|x64.ActiveCfg = Release|x64
+		{6C4D5CC9-224B-3F29-9F1D-86EBAA975F22}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
