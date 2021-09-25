@@ -29,6 +29,8 @@ Colour - Filters post Reverb  > 0 is highpass, < 0 lowpass.
 
 Emphasis - sets a slight resonance at the colour level. 
 
+Mix - Controls the wet dry level.
+
 # Known issues
 
 Changing the diffusion timings can cause some clicking noises, interpolation needed to fix this.
