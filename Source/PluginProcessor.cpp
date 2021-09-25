@@ -178,20 +178,18 @@ void EkoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
         mDelayTimeSmooth = mDelayTimeSmooth - 0.001f * (mDelayTimeSmooth - *mPreDelayTime);
         mScaledFeedback = *mFeedback * -0.95f;
 
-        float reverbInArrayL[8] = { 0.0f, 0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f, 0.0f };
-        float reverbInArrayR[8] = { 0.0f, 0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f, 0.0f };
+        float mutatedTimingArrayLeft [8] = { 0.0f, 0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f, 0.0f };
+        float mutatedTimingArrayRight[8] = { 0.0f, 0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f, 0.0f };
 
         for (int i = 0; i < 8; i++)
         {
-            reverbInArrayL[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayL[i]);
-            reverbInArrayR[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayR[i]);
+            mutatedTimingArrayLeft[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayL[i]);
+            mutatedTimingArrayRight[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayR[i]);
         }
 
 
-        
-
         float lout, rout;
-        mEko.processReverb(leftChannel[i], rightChannel[i], reverbInArrayL, reverbInArrayR, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, *mMute, mDelayTimeSmooth, *mFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
+        mEko.processReverb(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, *mMute, mDelayTimeSmooth, *mFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
 
         buffer.setSample(0, i, *mMute ? leftChannel[i] : lout);
         buffer.setSample(1, i, *mMute ? rightChannel[i] : rout);
