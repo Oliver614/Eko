@@ -59,35 +59,6 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-    void setFeedback(const float& feedback) { *mFeedback = feedback; };
-    void setDiffusion(const float& diffusion) { *mDiffusion = diffusion; }
-    void setSpread(const float& spread) { *mSpread = spread; }
-    void setCenter(const float& center) { *mCenter = center; }
-    void setMute(const float& mute) { mMute = mute; }
-    void setSize(const float& size) { *mSize = size; }
-    void setMix(const float& mix) { *mMix = mix; }
-    void setLP(const float& lp) { *mLP = lp; }
-    void setHP(const float& hp) { *mHP = hp; }
-    void setPreDelayTime(const float& delayTime) { *mPreDelayTime = delayTime; }
-    void setPreDelayFeedback(const float& delayFeedback) { *mPreDelayFeedback = delayFeedback; }
-    void setColourCutoff(const float& cutoff) { *mColourCutoff = cutoff; }
-    void setColourEmphasis(const float& emphasis) { *mColourEmphasis = emphasis; }
-
-    float getFeedback() { return *mFeedback; }
-    float getDiffusion() { return *mDiffusion; }
-    float getSpread() { return *mSpread; }
-    float getCenter() { return *mCenter; }
-    float getSize() { return *mSize; }
-    float getMix() { return *mMix; }
-    float getLP() { return *mLP; }
-    float getHP() { return *mHP; }
-    bool  getMute() { return mMute; }
-
-    float getPreDelayTime() { return *mPreDelayTime; }
-    float getPreDelayFeedback() { return *mPreDelayFeedback; }
-
-    float getColour() { return *mColourCutoff; }
-    float getEmphasis() { return *mColourEmphasis; }
 
 private:
 
@@ -121,8 +92,6 @@ private:
 
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
-    
-
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EkoAudioProcessor)
 };

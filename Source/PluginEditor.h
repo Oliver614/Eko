@@ -32,18 +32,18 @@ private:
     // access the processor object that created it.
     EkoAudioProcessor& audioProcessor;
 
-    EkoKnob mHighPassKnob           ;
-    EkoKnob mLowPassKnob            ;
-    EkoKnob mSizeKnob               ;
-    EkoKnob mDiffusionKnob          ;
-    EkoKnob mCenterKnob             ;
-    EkoKnob mSpreadKnob             ;
-    EkoKnob mMixKnob                ;
-    EkoKnob mFeedbackKnob           ;  
-    EkoKnob mPreDelayTimeKnob       ;
-    EkoKnob mPreDelayFeedbackKnob   ;
-    EkoKnob mColourKnob             ;
-    EkoKnob mEmphasisKnob           ;
+    EkoKnob mHighPassKnob;
+    EkoKnob mLowPassKnob;
+    EkoKnob mSizeKnob;
+    EkoKnob mDiffusionKnob;
+    EkoKnob mCenterKnob;
+    EkoKnob mSpreadKnob;
+    EkoKnob mMixKnob;
+    EkoKnob mFeedbackKnob;  
+    EkoKnob mPreDelayTimeKnob;
+    EkoKnob mPreDelayFeedbackKnob;
+    EkoKnob mColourKnob;
+    EkoKnob mEmphasisKnob;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mHighPassKnobAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mLowPassKnobAttachment;

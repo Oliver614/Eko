@@ -41,10 +41,6 @@ EkoAudioProcessor::EkoAudioProcessor()
     mColourCutoff = parameters.getRawParameterValue("colourEmphasis");
     mColourEmphasis = parameters.getRawParameterValue("mix");
     
-
-
-
-
 }
 
 EkoAudioProcessor::~EkoAudioProcessor()
@@ -203,9 +199,8 @@ void EkoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
             mutatedTimingArrayRight[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayR[i]);
         }
 
-
         float lout, rout;
-        mEko.processReverb(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, mMute, mDelayTimeSmooth, *mFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
+        mEko.processReverb(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, mDelayTimeSmooth, *mFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
 
         buffer.setSample(0, i, lout);
         buffer.setSample(1, i, rout);
@@ -258,8 +253,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout EkoAudioProcessor::createPar
     params.add(std::make_unique<juce::AudioParameterFloat>("colourCutoff"       , "Colour", -1.f, 1.f, 0.f));
     params.add(std::make_unique<juce::AudioParameterFloat>("colourEmphasis"     , "Emphasis", 0.f, 1.f, 0.f));
     params.add(std::make_unique<juce::AudioParameterFloat>("mix"                , "Mix", 0.f, 1.f, 0.5f));
-    
-
     return params;
 }
 
