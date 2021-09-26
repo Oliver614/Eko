@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "../DelayLine/DelayLine.h"
 #include "../Filter/Filter.h"
 #include "../EkoPreDelay/EkoPreDelay.h"
@@ -78,7 +77,6 @@ private:
 	void read(float& L, float& R, const float& diffusion);
 
 	void colour(const float& sampleLeft, const float& sampleRight, const float& cutoff, const float& emphasis, float& returnLeft, float& returnRight);
-
 	void mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& L, float& R);
 
 public:

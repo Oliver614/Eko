@@ -59,12 +59,11 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     //==============================================================================
-
     void setFeedback(const float& feedback) { *mFeedback = feedback; };
     void setDiffusion(const float& diffusion) { *mDiffusion = diffusion; }
     void setSpread(const float& spread) { *mSpread = spread; }
     void setCenter(const float& center) { *mCenter = center; }
-    void setMute(const float& mute) { *mMute = mute; }
+    void setMute(const float& mute) { mMute = mute; }
     void setSize(const float& size) { *mSize = size; }
     void setMix(const float& mix) { *mMix = mix; }
     void setLP(const float& lp) { *mLP = lp; }
@@ -82,7 +81,7 @@ public:
     float getMix() { return *mMix; }
     float getLP() { return *mLP; }
     float getHP() { return *mHP; }
-    bool  getMute() { return *mMute; }
+    bool  getMute() { return mMute; }
 
     float getPreDelayTime() { return *mPreDelayTime; }
     float getPreDelayFeedback() { return *mPreDelayFeedback; }
@@ -101,25 +100,27 @@ private:
     float mTimeArrayL[8] = { 0.0449278f, 0.127066f, 0.343338f, 0.510253f, 0.592813f, 0.709509f, 0.815368f, 0.934397f };
     float mTimeArrayR[8] = { 0.0327893f, 0.123349f, 0.233104f, 0.414528f, 0.494518f, 0.653244f, 0.747613f, 0.929841f };
 
-    juce::AudioParameterFloat* mPreDelayTime;
-    juce::AudioParameterFloat* mPreDelayFeedback;
-
-    juce::AudioParameterFloat* mDiffusion;
-    juce::AudioParameterFloat* mFeedback;
-    juce::AudioParameterFloat* mSize;
-    juce::AudioParameterFloat* mSpread;
-    juce::AudioParameterFloat* mCenter;
-
-    juce::AudioParameterFloat* mLP;
-    juce::AudioParameterFloat* mHP;
-    juce::AudioParameterFloat* mMix;
-    juce::AudioParameterBool* mMute;
-
-    juce::AudioParameterFloat* mColourCutoff;
-    juce::AudioParameterFloat* mColourEmphasis;
+    std::atomic<float>* mPreDelayTime;
+    std::atomic<float>* mPreDelayFeedback;
+    std::atomic<float>* mDiffusion;
+    std::atomic<float>* mFeedback;
+    std::atomic<float>* mSize;
+    std::atomic<float>* mSpread;
+    std::atomic<float>* mCenter;
+    std::atomic<float>* mLP;
+    std::atomic<float>* mHP;
+    std::atomic<float>* mMix;
+    std::atomic<float>* mColourCutoff;
+    std::atomic<float>* mColourEmphasis;
+    bool  mMute = false;
 
     Eko mEko;
     EkoTime mEkoTime;
+
+    juce::AudioProcessorValueTreeState parameters;
+
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    
     
 
     //==============================================================================
