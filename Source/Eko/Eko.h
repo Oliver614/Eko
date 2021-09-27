@@ -96,7 +96,7 @@ private:
 	bool mSwitchLfoDirectionUp;
 
 	float mHpCutoff, mLpCutoff, mLfoAmount, mTimeVariation, mDiffusionAmount, mSampleRate, mDiffusionFeedbackLeft, mDiffusionFeedbackRight;
-	float tL[mMaxDiffusionSteps], tR[mMaxDiffusionSteps], df[mMaxDiffusionSteps];
+	float mTimingsLeft[mMaxDiffusionSteps], mTimingsRight[mMaxDiffusionSteps], df[mMaxDiffusionSteps];
 	float mLtoScanX8[mMaxDiffusionSteps], mRtoScanX8[mMaxDiffusionSteps];
 	float mDiffusionArray[mMaxDiffusionSteps];
 };

@@ -154,6 +154,7 @@ float Eko::sclClip(const float& ctl, const float& min, const float& max)
 	return c;
 }
 
+
 void Eko::scl(const float& tx, const float& tPlus, float& tx2, float& lx)
 {
 	float a = sclClip(tPlus, 0.25f, 1.f);
@@ -186,8 +187,8 @@ void Eko::lfo(const float& txIn, const float& lfoAmt, float* t1, float* t2)
 
 	for (int i = 0; i < mMaxDiffusionSteps; i++)
 	{
-		tL[i] = lfoStage(i, mPhase, n, t1[i], tx, lx);
-		tR[i] = lfoStage(i, mPhase, n, t2[i], tx, lx);
+		mTimingsLeft[i] = lfoStage(i, mPhase, n, t1[i], tx, lx);
+		mTimingsRight[i] = lfoStage(i, mPhase, n, t2[i], tx, lx);
 	}
 
 }
@@ -229,7 +230,7 @@ void Eko::fb(const float& LIn, const float& RIn, const float& fb, float& returnL
 
 void Eko::read(float& L, float& R, const float& diffusion)
 {
-	float pickup = (9.5f - 3.f) * diffusion + 3.f;
+	float pickup = 6.5f * diffusion + 3.f;
 	float clipedPickup = pickup > 7.f ? 7.f : pickup;
 
 	int32_t pos = floor(clipedPickup - 0.5f);
