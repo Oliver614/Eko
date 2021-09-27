@@ -67,8 +67,8 @@ Eko::Eko()
 
 	for (int i = 0; i < mMaxDiffusionSteps; i++)
 	{
-		tL[i] = 0.f;
-		tR[i] = 0.f;
+		mTimingsLeft[i] = 0.f;
+		mTimingsRight[i] = 0.f;
 		df[i] = 0.f;
 		mLtoScanX8[i] = 0.f;
 		mRtoScanX8[i] = 0.f;
@@ -333,8 +333,8 @@ void Eko::processReverb(const float& lIn, const float& rIn, float* lArray, float
 	float leftToDiffuser = 0.f, rightToDiffuser = 0.f;
 	fb(leftToFeedback, rightToFeedback, fbck, leftToDiffuser, mDiffusionFeedbackLeft, rightToDiffuser, mDiffusionFeedbackRight);
 
-	mMultiTapDelayL.processMultiTapDiffusion(leftToDiffuser, mDiffusionFeedbackLeft, tL, mDiffusionArray, mLtoScanX8);
-	mMultiTapDelayR.processMultiTapDiffusion(rightToDiffuser, mDiffusionFeedbackRight, tR, mDiffusionArray, mRtoScanX8);
+	mMultiTapDelayL.processMultiTapDiffusion(leftToDiffuser, mDiffusionFeedbackLeft, mTimingsLeft, mDiffusionArray, mLtoScanX8);
+	mMultiTapDelayR.processMultiTapDiffusion(rightToDiffuser, mDiffusionFeedbackRight, mTimingsLeft, mDiffusionArray, mRtoScanX8);
 
 	float leftToColour = 0.f, rightToColour = 0.f;
 	read(leftToColour, rightToColour, diffusion);
