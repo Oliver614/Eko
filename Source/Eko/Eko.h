@@ -70,15 +70,15 @@ private:
 
 	void eq(const float& hpCutoff, const float& lpCutoff, float& outL, float& outR);
 	void fb(const float& LIn, const float& RIn, const float& fb, float& returnLeft, float& feedbackLeft, float& returnRight, float& feedbackRight);
-	void read(float& L, float& R, const float& diffusion);
+	void read(float& returnLeft, float& returnRight, const float& diffusion);
 
 	void colour(const float& sampleLeft, const float& sampleRight, const float& cutoff, const float& emphasis, float& returnLeft, float& returnRight);
-	void mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& L, float& R);
+	void mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& returnLeft, float& returnRight);
 
 public:
 
-	void processReverb(const float& lIn, const float& rIn, float* lArray, float* rArray, const float& diffusion, const float& size, const float& LPAmmount, const float& HPAmmount, 
-		const float& fbck, const float& mix, const float& preDelayTime, const float& preDelayFeedback, const float& colourCutoff, const float& colourEmphasis, float& lOut, float& rOut);
+	void process(const float& lIn, const float& rIn, float* lArray, float* rArray, const float& diffusion, const float& size, const float& LPAmmount, const float& HPAmmount, 
+		const float& fbck, const float& mix, const float& preDelayTime, const float& preDelayFeedback, const float& colourCutoff, const float& colourEmphasis, float& returnLeft, float& returnRight);
 
 private:
 

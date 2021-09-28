@@ -195,12 +195,12 @@ void EkoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
 
         for (int i = 0; i < 8; i++)
         {
-            mutatedTimingArrayLeft[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayL[i]);
-            mutatedTimingArrayRight[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayR[i]);
+            mutatedTimingArrayLeft[i] = mEkoTime.process(mSpreadSmooth, mCenterSmooth, mTimeArrayL[i]);
+            mutatedTimingArrayRight[i] = mEkoTime.process(mSpreadSmooth, mCenterSmooth, mTimeArrayR[i]);
         }
 
         float lout, rout;
-        mEko.processReverb(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, mDelayTimeSmooth, *mFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
+        mEko.process(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, mDelayTimeSmooth, *mFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
 
         buffer.setSample(0, i, lout);
         buffer.setSample(1, i, rout);

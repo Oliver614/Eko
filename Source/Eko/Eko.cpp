@@ -228,7 +228,7 @@ void Eko::fb(const float& LIn, const float& RIn, const float& fb, float& returnL
 // the lower the diffuser position the less diffusers the sound travels through before being read.
 //==============================================================================================================================
 
-void Eko::read(float& L, float& R, const float& diffusion)
+void Eko::read(float& returnLeft, float& returnRight, const float& diffusion)
 {
 	float pickup = 6.5f * diffusion + 3.f;
 	float clipedPickup = pickup > 7.f ? 7.f : pickup;
@@ -246,8 +246,8 @@ void Eko::read(float& L, float& R, const float& diffusion)
 	float invShape = (2.f - invfract) * invfract;
 	float shape = (2.f - fract) * fract;
 
-	L = (L0 * invShape) + (L1 * shape);
-	R = (R0 * invShape) + (R1 * shape);
+	returnLeft = (L0 * invShape) + (L1 * shape);
+	returnRight = (R0 * invShape) + (R1 * shape);
 }
 
 //==============================================================================================================================
@@ -285,7 +285,7 @@ void Eko::colour(const float& sampleLeft, const float& sampleRight, const float&
 // Also takes into account of the feedback parameter to stop oversaturation at high feedback levels.
 //==============================================================================================================================
 
-void Eko::mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& L, float& R)
+void Eko::mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& returnLeft, float& returnRight)
 {
 
 	float dryGain = (2 - (1 - mix)) * (1 - mix);
@@ -306,16 +306,16 @@ void Eko::mix(const float& l0, const float& r0, const float& l1, const float& r1
 	float l1a = wetGain * l1;
 	float r1a = wetGain * r1;
 
-	L = l1a + l0a;
-	R = r1a + r0a;
+	returnLeft = l1a + l0a;
+	returnRight = r1a + r0a;
 }
 
 //==============================================================================================================================
 // Main reverb processing block.
 //==============================================================================================================================
 
-void Eko::processReverb(const float& lIn, const float& rIn, float* lArray, float* rArray, const float& diffusion, const float& size, const float& LPAmmount, const float& HPAmmount, 
-	const float& fbck, const float& mixAmount, const float& preDelayTime, const float& preDelayFeedback, const float& colourCutoff, const float& colourEmphasis, float& lOut, float& rOut)
+void Eko::process(const float& lIn, const float& rIn, float* lArray, float* rArray, const float& diffusion, const float& size, const float& LPAmmount, const float& HPAmmount, 
+	const float& fbck, const float& mixAmount, const float& preDelayTime, const float& preDelayFeedback, const float& colourCutoff, const float& colourEmphasis, float& returnLeft, float& returnRight)
 {
 	mPassThroughLeft = lIn; mPassThroughRight = rIn;
 	mSampleLeft = lIn; mSampleRight = rIn;
@@ -342,5 +342,5 @@ void Eko::processReverb(const float& lIn, const float& rIn, float* lArray, float
 	float leftToMix = 0.f, rightToMix = 0.f;
 	colour(leftToColour, rightToColour, colourCutoff, colourEmphasis, leftToMix, rightToMix);
 
-	mix(mPassThroughLeft, mPassThroughRight, leftToMix, rightToMix, fbck, mixAmount, lOut, rOut);
+	mix(mPassThroughLeft, mPassThroughRight, leftToMix, rightToMix, fbck, mixAmount, returnLeft, returnRight);
 }
