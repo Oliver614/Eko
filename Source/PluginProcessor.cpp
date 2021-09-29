@@ -200,7 +200,7 @@ void EkoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
         }
 
         float lout, rout;
-        mEko.process(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, mDelayTimeSmooth, *mFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
+        mEko.process(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, mDelayTimeSmooth, *mPreDelayFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
 
         buffer.setSample(0, i, lout);
         buffer.setSample(1, i, rout);
