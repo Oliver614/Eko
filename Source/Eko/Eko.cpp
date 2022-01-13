@@ -121,14 +121,10 @@ void Eko::diffusionCalcs(const float& diff)
 
 void Eko::phase()
 {
-	mSwitchLfoDirectionUp ? mPhase += 1.f / mSampleRate : mPhase -= 1.f / mSampleRate;
-	if (mPhase >= 0.5f)
+	mSwitchLfoDirectionUp ? mPhase += .1f / mSampleRate : mPhase -= .1f / mSampleRate;
+	if (mPhase >= 1.f || mPhase <= -0.f)
 	{
-		mSwitchLfoDirectionUp = false;
-	}
-	else if (mPhase <= -0.5f)
-	{
-		mSwitchLfoDirectionUp = true;
+		mSwitchLfoDirectionUp = !mSwitchLfoDirectionUp;
 	}
 }
 
