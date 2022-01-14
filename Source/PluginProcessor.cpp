@@ -41,10 +41,6 @@ EkoAudioProcessor::EkoAudioProcessor()
     mColourCutoff = parameters.getRawParameterValue("colourEmphasis");
     mColourEmphasis = parameters.getRawParameterValue("mix");
     
-
-
-
-
 }
 
 EkoAudioProcessor::~EkoAudioProcessor()
@@ -173,12 +169,6 @@ void EkoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
     mColourCutoff = parameters.getRawParameterValue("colourCutoff");
     mColourEmphasis = parameters.getRawParameterValue("colourEmphasis");
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
@@ -199,13 +189,12 @@ void EkoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
 
         for (int i = 0; i < 8; i++)
         {
-            mutatedTimingArrayLeft[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayL[i]);
-            mutatedTimingArrayRight[i] = mEkoTime.shapeTimes(mSpreadSmooth, mCenterSmooth, mTimeArrayR[i]);
+            mutatedTimingArrayLeft[i] = mEkoTime.process(mSpreadSmooth, mCenterSmooth, mTimeArrayL[i]);
+            mutatedTimingArrayRight[i] = mEkoTime.process(mSpreadSmooth, mCenterSmooth, mTimeArrayR[i]);
         }
 
-
         float lout, rout;
-        mEko.processReverb(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, mMute, mDelayTimeSmooth, *mFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
+        mEko.process(leftChannel[i], rightChannel[i], mutatedTimingArrayLeft, mutatedTimingArrayRight, *mDiffusion, mSizeSmooth, *mLP, *mHP, mScaledFeedback, *mMix, mDelayTimeSmooth, *mPreDelayFeedback, *mColourCutoff, *mColourEmphasis, lout, rout);
 
         buffer.setSample(0, i, lout);
         buffer.setSample(1, i, rout);
@@ -258,8 +247,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout EkoAudioProcessor::createPar
     params.add(std::make_unique<juce::AudioParameterFloat>("colourCutoff"       , "Colour", -1.f, 1.f, 0.f));
     params.add(std::make_unique<juce::AudioParameterFloat>("colourEmphasis"     , "Emphasis", 0.f, 1.f, 0.f));
     params.add(std::make_unique<juce::AudioParameterFloat>("mix"                , "Mix", 0.f, 1.f, 0.5f));
-    
-
     return params;
 }
 

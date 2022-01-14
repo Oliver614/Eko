@@ -40,7 +40,7 @@ inline void MultiTapDiffusion::init(const float& sampleRate, const float& sample
 	}
 }
 
-void MultiTapDiffusion::processMultiTapDiffusion(const float& in, float& z, float* t, float* df, float* out)
+void MultiTapDiffusion::processMultiTapDiffusion(const float& in, float& feedback, float* t, float* df, float* out)
 {
 	float a = in;
 	float b, c, d, e, f, g, h, i;
@@ -53,8 +53,7 @@ void MultiTapDiffusion::processMultiTapDiffusion(const float& in, float& z, floa
 	g = mDiffuserArray[5].twoPassDiffuse(f, t[5] / mSampleRate, df[5], out[5]);
 	h = mDiffuserArray[6].twoPassDiffuse(g, t[6] / mSampleRate, df[6], out[6]);
 	i = mDiffuserArray[7].twoPassDiffuse(h, t[7] / mSampleRate, df[7], out[7]);
-
-	z = i;
+	feedback = i;
 }
 
 //==============================================================================================================================
@@ -63,13 +62,13 @@ Eko::Eko()
 {
 	mHpCutoff = 0.f; mLpCutoff = 0.f; mLfoAmount = 0.f; mTimeVariation = 0.f;
 	mDiffusionAmount = 0.f; mSampleRate = 0.f; mSampleLeft = 0.f; mSampleRight = 0.f;
-	mPhase = 0.f; mPassThroughLeft = 0.f; mPassThroughRight = 0.f; zL = 0.f; zR = 0.f;
+	mPhase = 0.f; mPassThroughLeft = 0.f; mPassThroughRight = 0.f; mDiffusionFeedbackLeft = 0.f; mDiffusionFeedbackRight = 0.f;
 	mSwitchLfoDirectionUp = true;
 
 	for (int i = 0; i < mMaxDiffusionSteps; i++)
 	{
-		tL[i] = 0.f;
-		tR[i] = 0.f;
+		mTimingsLeft[i] = 0.f;
+		mTimingsRight[i] = 0.f;
 		df[i] = 0.f;
 		mLtoScanX8[i] = 0.f;
 		mRtoScanX8[i] = 0.f;
@@ -100,12 +99,18 @@ void Eko::init(const float& sampleRate, const float& samplesPerBlock)
 
 }
 
+//==============================================================================================================================
+// Scales the spread parameters to the appropriate values  
+//==============================================================================================================================
+
 void Eko::spreadParams(const float& spread)
 {
 	mLfoAmount = (spread * 0.6f) + 0.15f;
 	float a = (spread * 30.f) + 10.f;
 	mTimeVariation = pow(10.0, a / 20.0);
 }
+
+
 
 void Eko::diffusionCalcs(const float& diff)
 {
@@ -119,15 +124,24 @@ void Eko::diffusionCalcs(const float& diff)
 	mDiffusionArray[7] = 0.66f * diff;
 }
 
+//==============================================================================================================================
+// Oscillates between +/-0.5 every second. 
+//==============================================================================================================================
+
 void Eko::phase()
 {
 	mSwitchLfoDirectionUp ? mPhase += .1f / mSampleRate : mPhase -= .1f / mSampleRate;
 	if (mPhase >= 1.f || mPhase <= 0.f)
+	mSwitchLfoDirectionUp ? mPhase += .1f / mSampleRate : mPhase -= .1f / mSampleRate;
+	if (mPhase >= 1.f || mPhase <= -0.f)
 	{
 		mSwitchLfoDirectionUp = !mSwitchLfoDirectionUp;
 	}
-
 }
+
+//==============================================================================================================================
+// Clips the signal between the max and min. 
+//==============================================================================================================================
 
 float Eko::sclClip(const float& ctl, const float& min, const float& max)
 {
@@ -137,6 +151,7 @@ float Eko::sclClip(const float& ctl, const float& min, const float& max)
 	float c = b == 0.f ? 0.f : b / range;
 	return c;
 }
+
 
 void Eko::scl(const float& tx, const float& tPlus, float& tx2, float& lx)
 {
@@ -154,22 +169,31 @@ float Eko::lfoStage(const float& i, const float& phase, const float& n, const fl
 	return d;
 }
 
+//==============================================================================================================================
+// Varies the timings from EkoTime to produce a more prominant diffusion effect dependent on the Spread param. 
+// The greater the spread the further apart the timimgs become creating more 'space' 
+//==============================================================================================================================
+
 void Eko::lfo(const float& txIn, const float& lfoAmt, float* t1, float* t2)
 {
 	float n = 0.125f;//1.f / mMaxDiffusionSteps;
 
-	float tx, lx, ph;
+	float tx, lx;
 
 	scl(txIn, lfoAmt, tx, lx);
 	phase();
 
 	for (int i = 0; i < mMaxDiffusionSteps; i++)
 	{
-		tL[i] = lfoStage(i, mPhase, n, t1[i], tx, lx);
-		tR[i] = lfoStage(i, mPhase, n, t2[i], tx, lx);
+		mTimingsLeft[i] = lfoStage(i, mPhase, n, t1[i], tx, lx);
+		mTimingsRight[i] = lfoStage(i, mPhase, n, t2[i], tx, lx);
 	}
 
 }
+
+//==============================================================================================================================
+// Applies Highpass and lowpass filtering to the incoming signal
+//==============================================================================================================================
 
 void Eko::eq(const float& hpCutoff, const float& lpCutoff, float& outL, float& outR)
 {
@@ -191,15 +215,20 @@ void Eko::eq(const float& hpCutoff, const float& lpCutoff, float& outL, float& o
 	outR = rLp;
 }
 
-void Eko::fb(const float& LIn, const float& RIn, const float& fb, float& LOut, float& zL, float& ROut, float& zR)
+void Eko::fb(const float& LIn, const float& RIn, const float& fb, float& returnLeft, float& feedbackLeft, float& returnRight, float& feedbackRight)
 {
-	LOut = zL * fb + LIn;
-	ROut = zR * fb + RIn;
+	returnLeft = feedbackLeft * fb + LIn;
+	returnRight = feedbackRight * fb + RIn;
 }
 
-void Eko::read(float& L, float& R, const float& diffusion)
+//==============================================================================================================================
+// Reads from 2 taps in the diffuser array depending of the diffuser position,
+// the lower the diffuser position the less diffusers the sound travels through before being read.
+//==============================================================================================================================
+
+void Eko::read(float& returnLeft, float& returnRight, const float& diffusion)
 {
-	float pickup = (9.5f - 3.f) * diffusion + 3.f;
+	float pickup = 6.5f * diffusion + 3.f;
 	float clipedPickup = pickup > 7.f ? 7.f : pickup;
 
 	int32_t pos = floor(clipedPickup - 0.5f);
@@ -215,9 +244,13 @@ void Eko::read(float& L, float& R, const float& diffusion)
 	float invShape = (2.f - invfract) * invfract;
 	float shape = (2.f - fract) * fract;
 
-	L = (L0 * invShape) + (L1 * shape);
-	R = (R0 * invShape) + (R1 * shape);
+	returnLeft = (L0 * invShape) + (L1 * shape);
+	returnRight = (R0 * invShape) + (R1 * shape);
 }
+
+//==============================================================================================================================
+// Performs high or lowpass filtering on reverb output and applies resonance. 
+//==============================================================================================================================
 
 void Eko::colour(const float& sampleLeft, const float& sampleRight, const float& cutoff, const float& emphasis, float& returnLeft, float& returnRight)
 {
@@ -243,11 +276,14 @@ void Eko::colour(const float& sampleLeft, const float& sampleRight, const float&
 
 	returnLeft = mColourFilterLeft.process(sampleLeft);
 	returnRight = mColourFilterRight.process(sampleRight);
-	
-	
 }
 
-void Eko::mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& L, float& R)
+//==============================================================================================================================
+// Mixes the wet and dry signal
+// Also takes into account of the feedback parameter to stop oversaturation at high feedback levels.
+//==============================================================================================================================
+
+void Eko::mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& returnLeft, float& returnRight)
 {
 
 	float dryGain = (2 - (1 - mix)) * (1 - mix);
@@ -262,20 +298,22 @@ void Eko::mix(const float& l0, const float& r0, const float& l1, const float& r1
 
 	float wetGain = oneOver * wetShape;
 
-
 	float l0a = dryGain * l0;
 	float r0a = dryGain * r0;
 
 	float l1a = wetGain * l1;
 	float r1a = wetGain * r1;
 
-	L = l1a + l0a;
-	R = r1a + r0a;
-
+	returnLeft = l1a + l0a;
+	returnRight = r1a + r0a;
 }
 
-void Eko::processReverb(const float& lIn, const float& rIn, float* lArray, float* rArray, const float& diffusion, const float& size, const float& LPAmmount, const float& HPAmmount, 
-	const float& fbck, const float& mixAmount, const bool& mute, const float& preDelayTime, const float& preDelayFeedback, const float& colourCutoff, const float& colourEmphasis, float& lOut, float& rOut)
+//==============================================================================================================================
+// Main reverb processing block.
+//==============================================================================================================================
+
+void Eko::process(const float& lIn, const float& rIn, float* lArray, float* rArray, const float& diffusion, const float& size, const float& LPAmmount, const float& HPAmmount, 
+	const float& fbck, const float& mixAmount, const float& preDelayTime, const float& preDelayFeedback, const float& colourCutoff, const float& colourEmphasis, float& returnLeft, float& returnRight)
 {
 	mPassThroughLeft = lIn; mPassThroughRight = rIn;
 	mSampleLeft = lIn; mSampleRight = rIn;
@@ -291,10 +329,10 @@ void Eko::processReverb(const float& lIn, const float& rIn, float* lArray, float
 	mPreDelay.process(leftToPreDelay, rightToPreDelay, preDelayTime, preDelayFeedback, leftToFeedback, rightToFeedback);
 
 	float leftToDiffuser = 0.f, rightToDiffuser = 0.f;
-	fb(leftToFeedback, rightToFeedback, fbck, leftToDiffuser, zL, rightToDiffuser, zR);
+	fb(leftToFeedback, rightToFeedback, fbck, leftToDiffuser, mDiffusionFeedbackLeft, rightToDiffuser, mDiffusionFeedbackRight);
 
-	mMultiTapDelayL.processMultiTapDiffusion(leftToDiffuser, zL, tL, mDiffusionArray, mLtoScanX8);
-	mMultiTapDelayR.processMultiTapDiffusion(rightToDiffuser, zR, tR, mDiffusionArray, mRtoScanX8);
+	mMultiTapDelayL.processMultiTapDiffusion(leftToDiffuser, mDiffusionFeedbackLeft, mTimingsLeft, mDiffusionArray, mLtoScanX8);
+	mMultiTapDelayR.processMultiTapDiffusion(rightToDiffuser, mDiffusionFeedbackRight, mTimingsLeft, mDiffusionArray, mRtoScanX8);
 
 	float leftToColour = 0.f, rightToColour = 0.f;
 	read(leftToColour, rightToColour, diffusion);
@@ -302,5 +340,5 @@ void Eko::processReverb(const float& lIn, const float& rIn, float* lArray, float
 	float leftToMix = 0.f, rightToMix = 0.f;
 	colour(leftToColour, rightToColour, colourCutoff, colourEmphasis, leftToMix, rightToMix);
 
-	mix(mPassThroughLeft, mPassThroughRight, leftToMix, rightToMix, fbck, mixAmount, lOut, rOut);
+	mix(mPassThroughLeft, mPassThroughRight, leftToMix, rightToMix, fbck, mixAmount, returnLeft, returnRight);
 }

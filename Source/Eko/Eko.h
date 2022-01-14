@@ -30,7 +30,6 @@ struct Diffuser
 
 };
 
-
 //==============================================================================================================================
 
 struct MultiTapDiffusion
@@ -39,17 +38,14 @@ struct MultiTapDiffusion
 	~MultiTapDiffusion() {}
 
 	void init(const float& sampleRate, const float& samplesPerBlock);
-	void processMultiTapDiffusion(const float& in, float& z, float* t, float* df, float* out);
+	void processMultiTapDiffusion(const float& in, float& feedback, float* t, float* df, float* out);
 
 	static constexpr uint32_t mNumberOfDiffusionLines = 8;
 	const float mMaxDiffuserTime = 2.f;
 	float mSampleRate = 0.f;
 
 	Diffuser mDiffuserArray[mNumberOfDiffusionLines];
-
 };
-
-
 
 //==============================================================================================================================
 
@@ -73,16 +69,16 @@ private:
 	void lfo(const float& txIn, const float& lfoAmt, float* t1, float* t2);
 
 	void eq(const float& hpCutoff, const float& lpCutoff, float& outL, float& outR);
-	void fb(const float& LIn, const float& RIn, const float& fb, float& LOut, float& zL, float& ROut, float& zR);
-	void read(float& L, float& R, const float& diffusion);
+	void fb(const float& LIn, const float& RIn, const float& fb, float& returnLeft, float& feedbackLeft, float& returnRight, float& feedbackRight);
+	void read(float& returnLeft, float& returnRight, const float& diffusion);
 
 	void colour(const float& sampleLeft, const float& sampleRight, const float& cutoff, const float& emphasis, float& returnLeft, float& returnRight);
-	void mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& L, float& R);
+	void mix(const float& l0, const float& r0, const float& l1, const float& r1, const float& fb, const float& mix, float& returnLeft, float& returnRight);
 
 public:
 
-	void processReverb(const float& lIn, const float& rIn, float* lArray, float* rArray, const float& diffusion, const float& size, const float& LPAmmount, const float& HPAmmount, 
-		const float& fbck, const float& mix, const bool& mute, const float& preDelayTime, const float& preDelayFeedback, const float& colourCutoff, const float& colourEmphasis, float& lOut, float& rOut);
+	void process(const float& lIn, const float& rIn, float* lArray, float* rArray, const float& diffusion, const float& size, const float& LPAmmount, const float& HPAmmount, 
+		const float& fbck, const float& mix, const float& preDelayTime, const float& preDelayFeedback, const float& colourCutoff, const float& colourEmphasis, float& returnLeft, float& returnRight);
 
 private:
 
@@ -99,8 +95,8 @@ private:
 
 	bool mSwitchLfoDirectionUp;
 
-	float mHpCutoff, mLpCutoff, mLfoAmount, mTimeVariation, mDiffusionAmount, mSampleRate, zL, zR;
-	float tL[mMaxDiffusionSteps], tR[mMaxDiffusionSteps], df[mMaxDiffusionSteps];
+	float mHpCutoff, mLpCutoff, mLfoAmount, mTimeVariation, mDiffusionAmount, mSampleRate, mDiffusionFeedbackLeft, mDiffusionFeedbackRight;
+	float mTimingsLeft[mMaxDiffusionSteps], mTimingsRight[mMaxDiffusionSteps], df[mMaxDiffusionSteps];
 	float mLtoScanX8[mMaxDiffusionSteps], mRtoScanX8[mMaxDiffusionSteps];
 	float mDiffusionArray[mMaxDiffusionSteps];
 };

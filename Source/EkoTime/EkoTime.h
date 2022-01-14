@@ -16,7 +16,6 @@ public:
 
 private:
 
-	inline void diffShape(const float& diff, float* diffArray);
 	inline float exp_log(const float& in, const float& shp);
 	inline float crossFade(const float& in1, const float& in2, const float& x);
 	inline float shaperStage(const float& in, const float& xB, const float& xA, const float& shp, const float& levA, const float& levB, float& greaterThan);
@@ -24,24 +23,9 @@ private:
 
 public:
 
-	inline float shapeTimes(const float& spr, const float& center, const float& time);
+	inline float process(const float& spr, const float& center, const float& time);
 
 };
-
-/*
-* Returns the diffusion times for even diffusion and preventing echoing
-*/
-inline void EkoTime::diffShape(const float& diff, float* diffArray)
-{
-	diffArray[0] = 0.66f * diff;
-	diffArray[1] = 0.0286714f + ((0.66f - 0.0286714f) * diff);
-	diffArray[2] = 0.0571429f + ((0.66f - 0.0571429f) * diff);
-	diffArray[3] = 0.0857143f + ((0.66f - 0.0857143f) * diff);
-	diffArray[4] = 0.0857143f + ((0.66f - 0.0857143f) * diff);
-	diffArray[5] = 0.0571429f + ((0.66f - 0.0571429f) * diff);
-	diffArray[6] = 0.0286714f + ((0.66f - 0.0286714f) * diff);
-	diffArray[7] = 0.66f * diff;
-}
 
 /*
 * Finds the exponent of log, similar to f (x) = x ^ 1 / n but
@@ -114,7 +98,7 @@ inline float EkoTime::shaper(const float& time, const float& X, const float& spr
 /*
 * Translates spr to a value between 0.3 and 0.999 then executes the shaper function.
 */
-inline float EkoTime::shapeTimes(const float& shape /*Spread*/, const float& spr /*Center*/, const float& time)
+inline float EkoTime::process(const float& shape /*Spread*/, const float& spr /*Center*/, const float& time)
 {
 	float sprSquared = (spr * spr);
 	float spread = ((0.3f - 0.999f) * sprSquared) + 0.999f;
