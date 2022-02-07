@@ -57,11 +57,10 @@ public:
 
 	void init(const float& sampleRate, const float& samplesPerBlock);
 
-private:
+public:
 
 	void spreadParams(const float& spread);
 	void diffusionCalcs(const float& diff);
-
 	void phase();
 	float sclClip(const float& ctl, const float& min, const float& max);
 	void scl(const float& tx, const float& tPlus, float& tx2, float& lx);

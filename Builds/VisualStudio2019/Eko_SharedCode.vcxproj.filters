@@ -2631,6 +2631,9 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_osc.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\EkoTime\EkoTime.cpp">
+      <Filter>Eko\Eko\EkoTime</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\UI\EkoKnob.h">

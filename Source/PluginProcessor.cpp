@@ -235,18 +235,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout EkoAudioProcessor::createPar
 {
     juce::AudioProcessorValueTreeState::ParameterLayout params;
 
-    params.add(std::make_unique<juce::AudioParameterFloat>("predelaytime"       , "Pre Delay Time", 0.f, 2.f, 0.f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("predelaytime"       , "Pre Delay Time",     0.f, 2.f, 0.f));
     params.add(std::make_unique<juce::AudioParameterFloat>("predelayFeedback"   , "Pre Delay Feedback", 0.f, 1.f, 0.f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("diffusion"          , "Diffusion", 0.f, 1.f, 0.5f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("feedback"           , "Feedback", 0.f, 1.f, 0.5f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("size"               , "Size", 0.f, 1.f, 0.5f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("spread"             , "Spread", 0.f, 1.f, 0.5f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("center"             , "Center", 0.f, 1.f, 0.5f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("lp"                 , "LP", 0.f, 1.f, 1.f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("hp"                 , "HP", 0.f, 1.f, 0.f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("colourCutoff"       , "Colour", -1.f, 1.f, 0.f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("colourEmphasis"     , "Emphasis", 0.f, 1.f, 0.f));
-    params.add(std::make_unique<juce::AudioParameterFloat>("mix"                , "Mix", 0.f, 1.f, 0.5f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("diffusion"          , "Diffusion",          0.f, 1.f, 0.5f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("feedback"           , "Feedback",           0.f, 1.f, 0.5f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("size"               , "Size",               0.f, 1.f, 0.5f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("spread"             , "Spread",             0.f, 1.f, 0.5f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("center"             , "Center",             0.f, 1.f, 0.5f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("lp"                 , "LP",                 0.f, 1.f, 1.f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("hp"                 , "HP",                 0.f, 1.f, 0.f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("colourCutoff"       , "Colour",            -1.f, 1.f, 0.f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("colourEmphasis"     , "Emphasis",           0.f, 1.f, 0.f));
+    params.add(std::make_unique<juce::AudioParameterFloat>("mix"                , "Mix",                0.f, 1.f, 0.5f));
     return params;
 }
 

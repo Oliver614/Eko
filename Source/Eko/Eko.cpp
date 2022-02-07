@@ -20,12 +20,10 @@ void Diffuser::diffuse(const float& input, const float& feedback, float& toWrite
 float Diffuser::twoPassDiffuse(const float& input, const float& time, const float& feedback, float& outputArray)
 {
 
-
 	diffuse(input, feedback, mToWrite, mZ, mOut);
 	mDelayLine.write(mToWrite);
 	mZ = mDelayLine.read(time);
 	outputArray = mOut;
-
 	return mOut;
 }
 
